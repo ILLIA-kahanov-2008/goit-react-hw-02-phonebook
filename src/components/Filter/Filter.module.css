@@ -1,0 +1,12 @@
+.filter {
+  display: block;
+  border: 1px solid #a3a1a1;
+  text-align: center;
+  color: dodgerblue;
+  box-shadow: lightgrey 1px 4px;
+  padding: 10px 0;
+}
+
+.filter p {
+  margin-bottom: 5px;
+}
