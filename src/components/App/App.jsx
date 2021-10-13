@@ -26,25 +26,32 @@ class App extends Component {
 
   addNewContact = (newContact) => {
     const { contacts } = this.state;
-    const contactsNames = contacts.map((contact) => contact.name.toLowerCase());
-    contactsNames.includes(newContact.name.toLowerCase())
+    const isExists = contacts.some(
+      (contact) => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+    isExists
       ? alert(`${newContact.name} is already in contacts`)
       : this.setState((prevState) => ({
           contacts: [...prevState.contacts, newContact],
         }));
   };
 
-  removeContact = (e) => {
-    const { contacts } = this.state;
-    contacts.splice(
-      contacts.findIndex((contact) => contact.id === e.target.id),
-      1
+  removeContact = (id) => {
+    this.setState((prev) => ({
+      contacts: prev.contacts.filter((contact) => contact.id !== id),
+    }));
+  };
+
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
     );
-    this.setState({ contacts });
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
+    const filteredContacts = this.getFilteredContacts();
     return (
       <div className="App">
         <h1>Phonebook</h1>
@@ -52,8 +59,7 @@ class App extends Component {
         <h2>Contacts</h2>
         <Filter filteringName={filter} cbInputChange={this.handleChange} />
         <ContactList
-          contacts={contacts}
-          filteringName={filter}
+          filteredContacts={filteredContacts}
           cbRemoveContact={this.removeContact}
         />
       </div>

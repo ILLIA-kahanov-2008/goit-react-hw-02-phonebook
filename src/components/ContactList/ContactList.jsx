@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -20,60 +20,61 @@ const Styles = styled.div`
     text-align: center;
   }
 `;
+class ContactList extends Component {
+  handleClick = (e) => {
+    this.props.cbRemoveContact(e.target.id);
+  };
+  render() {
+    const { filteredContacts } = this.props;
+    const { handleClick } = this;
+    return (
+      <Styles>
+        <table className="selector1">
+          <thead className="selector2">
+            <tr>
+              <th className="selector3">Name</th>
+              <th className="selector3">Phone Number</th>
+              <th className="selector3">Etc.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredContacts.map(({ id, name, number }) => (
+              <tr key={id}>
+                <td
+                  className="selector3"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {name}
+                </td>
+                <td className="selector3">{number}</td>
+                <td className="selector3">
+                  <button
+                    className="button"
+                    type="button"
+                    onClick={handleClick}
+                    id={id}
+                  >
+                    Delete contact
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Styles>
+    );
+  }
+}
+
+export default ContactList;
 
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
+  filteredContacts: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
   ),
-  filteringName: PropTypes.string,
   cbRemoveContact: PropTypes.func.isRequired,
 };
-
-function ContactList({ contacts, filteringName, cbRemoveContact }) {
-  return (
-    <Styles>
-      <table className="selector1">
-        <thead className="selector2">
-          <tr>
-            <th className="selector3">Name</th>
-            <th className="selector3">Phone Number</th>
-            <th className="selector3">Etc.</th>
-          </tr>
-        </thead>
-        <tbody>
-          {contacts.map(
-            ({ id, name, number }) =>
-              name.toLowerCase().indexOf(filteringName.toLowerCase()) !==
-                -1 && (
-                <tr key={id}>
-                  <td
-                    className="selector3"
-                    style={{ textTransform: "capitalize" }}
-                  >
-                    {name}
-                  </td>
-                  <td className="selector3">{number}</td>
-                  <td className="selector3">
-                    <button
-                      className="button"
-                      type="button"
-                      onClick={cbRemoveContact}
-                      id={id}
-                    >
-                      Delete contact
-                    </button>
-                  </td>
-                </tr>
-              )
-          )}
-        </tbody>
-      </table>
-    </Styles>
-  );
-}
-
-export default ContactList;
