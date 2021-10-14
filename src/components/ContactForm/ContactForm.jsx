@@ -6,7 +6,6 @@ class ContactForm extends Component {
   state = {
     name: "",
     number: "",
-    newContact: null,
   };
 
   handleChange = (e) => {
@@ -23,7 +22,7 @@ class ContactForm extends Component {
       number,
       id: shortid(),
     };
-    this.setState({ name: "", number: "", newContact });
+    this.setState({ name: "", number: "" });
     cbAddNewContact(newContact);
   };
 
